@@ -59,4 +59,23 @@ class TaskController extends Controller
         $task->delete();
         return response()->json(null, 204);
     }
+
+    public function filter(Request $request)
+    {
+        $query = Task::query();
+
+        if ($request->has('status')) {
+            $query->where('status', $request->status);
+        }
+
+        if ($request->has('created_by')) {
+            $query->where('created_by', $request->created_by);
+        }
+
+        if ($request->has('manager')) {
+            $query->where('manager', $request->manager);
+        }
+
+        return response()->json($query->paginate(10));
+    }
 }

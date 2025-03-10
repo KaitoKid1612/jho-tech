@@ -56,4 +56,14 @@ class TagController extends Controller
         $tag->delete();
         return response()->json(null, 204);
     }
+
+    public function assign(Request $request)
+    {
+        $model = app($request->model_type)::findOrFail($request->model_id);
+        $tag = Tag::findOrFail($request->tag_id);
+
+        $model->tags()->attach($tag->id);
+
+        return response()->json(['message' => 'Tag assigned successfully']);
+    }
 }

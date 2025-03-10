@@ -58,4 +58,14 @@ class OpportunityController extends Controller
         $opportunity->delete();
         return response()->json(null, 204);
     }
+
+    public function pipeline()
+    {
+        return response()->json([
+            'new' => Opportunity::where('status', 'new')->get(),
+            'in_progress' => Opportunity::where('status', 'in_progress')->get(),
+            'won' => Opportunity::where('status', 'won')->get(),
+            'lost' => Opportunity::where('status', 'lost')->get(),
+        ]);
+    }
 }

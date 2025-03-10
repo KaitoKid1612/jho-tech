@@ -57,4 +57,30 @@ class ContactController extends Controller
         $contact->delete();
         return response()->json(null, 204);
     }
+
+    public function filter(Request $request)
+    {
+        $query = Contact::query();
+
+        if ($request->has('search')) {
+            $query->where('name', 'LIKE', "%{$request->search}%")
+                ->orWhere('email', 'LIKE', "%{$request->search}%");
+        }
+
+        if ($request->has('created_by')) {
+            $query->where('created_by', $request->created_by);
+        }
+
+        if ($request->has('manager')) {
+            $query->where('manager', $request->manager);
+        }
+
+        if ($request->has('tags')) {
+            $query->whereHas('tags', function ($q) use ($request) {
+                $q->whereIn('name', explode(',', $request->tags));
+            });
+        }
+
+        return response()->json($query->paginate(10));
+    }
 }
