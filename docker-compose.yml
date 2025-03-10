@@ -1,0 +1,55 @@
+version: '3.7'
+
+services:
+    jho-tech:
+        build:
+            context: '.'
+            args:
+                uid: ${UID}
+        container_name: jho-tech
+        restart: unless-stopped
+        environment:
+            - APACHE_RUN_USER=#${UID}
+            - APACHE_RUN_GROUP=#${UID}
+        volumes:
+            - .:/var/www/html
+        ports:
+            - 8080:80
+        networks:
+            - jho-tech-network
+
+    jho-tech-db:
+        image: mysql:8.0.32
+        container_name: jho-tech-db
+        restart: unless-stopped
+        ports:
+            - "3306:3306"
+        volumes:
+            - dbdata:/var/lib/mysql
+        environment:
+            - MYSQL_ROOT_PASSWORD=123456
+            - MYSQL_DATABASE=jho_tech
+            - MYSQL_USER=admin
+            - MYSQL_PASSWORD=123456
+        networks:
+            - jho-tech-network
+
+    jho-tech-phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        container_name: jho-tech-phpmyadmin
+        restart: unless-stopped
+        ports:
+            - "8081:80"
+        environment:
+            - PMA_HOST=jho-tech-db
+            - MYSQL_ROOT_PASSWORD=123456
+            - MYSQL_USER=admin
+        networks:
+            - jho-tech-network
+
+networks:
+    jho-tech-network:
+        driver: bridge
+volumes:
+    dbdata:
+        driver: local
