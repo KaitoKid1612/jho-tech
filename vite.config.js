@@ -12,7 +12,7 @@ export default defineConfig({
             refresh: true,
         }),
         vue({
-            input: 'resources/js/app.js',
+            input: ['resources/js/app.js'],
             refresh: true,
             template: {
                 transformAssetUrls: {
