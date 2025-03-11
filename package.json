@@ -8,15 +8,25 @@
     "devDependencies": {
         "@popperjs/core": "^2.11.6",
         "@vitejs/plugin-vue": "^5.2.1",
+        "@vue/eslint-config-prettier": "^10.2.0",
+        "autoprefixer": "^10.4.21",
         "axios": "^1.8.2",
         "bootstrap": "^5.2.3",
+        "eslint": "^9.22.0",
+        "eslint-plugin-vue": "^10.0.0",
         "laravel-vite-plugin": "^1.0.0",
+        "postcss": "^8.5.3",
         "sass": "^1.56.1",
+        "tailwindcss": "^3.4.17",
         "vite": "^6.2.1",
         "vue": "^3.5.13"
     },
     "dependencies": {
+        "@tailwindcss/vite": "^4.0.12",
+        "@vee-validate/zod": "^4.15.0",
         "pinia": "^3.0.1",
-        "vue-router": "^4.5.0"
+        "vee-validate": "^4.15.0",
+        "vue-router": "^4.5.0",
+        "zod": "^3.24.2"
     }
 }
