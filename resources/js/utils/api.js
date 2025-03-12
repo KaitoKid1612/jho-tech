@@ -8,7 +8,6 @@ const api = axios.create({
     withCredentials: true
 });
 
-// Thêm token vào tất cả request
 api.interceptors.request.use(config => {
     const authStore = useAuthStore();
     if (authStore.token) {
@@ -17,7 +16,6 @@ api.interceptors.request.use(config => {
     return config;
 }, error => Promise.reject(error));
 
-// Kiểm tra lỗi 401 (Token hết hạn)
 api.interceptors.response.use(
     response => response,
     error => {

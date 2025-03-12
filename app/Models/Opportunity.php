@@ -9,7 +9,11 @@ class Opportunity extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['user_id', 'contact_id', 'title', 'status', 'amount'];
+    protected $fillable = ['user_id', 'contact_id', 'title', 'status', 'amount', 'closing_date'];
+
+    protected $casts = [
+        'closing_date' => 'datetime',
+    ];
 
     public function user()
     {

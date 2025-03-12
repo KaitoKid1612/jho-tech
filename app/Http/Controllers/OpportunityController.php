@@ -10,9 +10,13 @@ class OpportunityController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Opportunity::with('tags')->get());
+        $opportunities = Opportunity::with(['contact', 'user', 'tags'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(25);
+
+        return response()->json($opportunities);
     }
 
     /**

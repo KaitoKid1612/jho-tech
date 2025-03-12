@@ -1,9 +1,9 @@
 <template>
   <div class="flex min-h-screen">
-    <Sidebar />
+    <Sidebar class="w-5 flex-shrink-0"/>
     <div class="flex flex-col flex-1">
       <Navbar />
-      <main class="p-6 bg-gray-900 flex-1 overflow-auto">
+      <main class="p-6 pt-0 bg-gray-900 flex-1 overflow-auto">
         <router-view></router-view>
       </main>
     </div>

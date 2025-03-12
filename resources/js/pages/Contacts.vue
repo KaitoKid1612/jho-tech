@@ -28,6 +28,14 @@
         <table v-else class="min-w-full divide-y divide-gray-700 text-sm">
             <thead>
                 <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 tracking-wider">
+                        <input
+                            type="checkbox"
+                            v-model="selectAll"
+                            @change="toggleSelectAll"
+                            class="w-4 h-4 text-red-600 border-gray-300 rounded-lg"
+                        />
+                    </th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 tracking-wider">Nom du contact</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 tracking-wider">Email</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 tracking-wider">Téléphone</th>
@@ -40,19 +48,34 @@
                     </th>
                 </tr>
             </thead>
-            <tbody class="divide-y divide-gray-800">
+            <tbody class="divide-y divide-gray-800 text-xs leading-[16px]">
                 <tr v-for="contact in contactsStore.contacts" :key="contact.id" class="hover:bg-gray-800">
                     <td class="px-6 py-4 whitespace-nowrap text-white">
-                        <div class="flex items-center gap-3">
-                            <input type="checkbox" class="w-4 h-4 text-red-600 border-gray-300 rounded-lg" />
-                            <div>
-                                <div class="text-white">{{ contact.name }}</div>
-                                <div class="text-gray-400 text-xs">Particulier</div>
-                            </div>
+                        <input
+                            type="checkbox"
+                            v-model="selectedContacts"
+                            :value="contact.id"
+                            class="w-4 h-4 text-red-600 border-gray-300 rounded-lg"
+                        />
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-white">
+                        <div class="text-white">{{ contact.name }}</div>
+                        <div class="text-gray-400 text-xs">Particulier</div>
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-gray-300">
+                        <div class="flex items-center gap-2">
+                            <img src="/images/icon/message.png" alt="Email" class="w-4 h-4 text-white max-w-none" />
+                            <span>{{ contact.email }}</span>
                         </div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-300">{{ contact.email }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-300">{{ contact.phone }}</td>
+
+                    <td class="px-6 py-4 whitespace-nowrap text-gray-300">
+                        <div class="flex items-center gap-2">
+                            <img src="/images/icon/call.png" alt="Phone" class="w-4 h-4 text-white max-w-none" />
+                            <span>{{ contact.phone }}</span>
+                        </div>
+                    </td>
+
                     <td class="px-6 py-4 whitespace-nowrap text-gray-300">
                         <span v-if="contact.opportunities.length > 0">
                             {{ contact.opportunities[0].title }}
@@ -74,12 +97,12 @@
                             </span>
                         </div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-center text-gray-400">
-                        <button class="mr-3 hover:text-white">
-                            <img src="/images/icon/edit.png" alt="Edit" class="w-4 h-4 text-white" />
+                    <td class="flex gap-1 px-6 py-4 whitespace-nowrap text-center text-gray-400">
+                        <button class="hover:text-white">
+                            <img src="/images/icon/edit.png" alt="Edit" class="w-4 h-4 text-white max-w-none" />
                         </button>
                         <button class="hover:text-red-600" @click="handleDeleteContact(contact.id)">
-                            <img src="/images/icon/trash.png" alt="Delete" class="w-4 h-4 text-white" />
+                            <img src="/images/icon/trash.png" alt="Delete" class="w-4 h-4 text-white max-w-none" />
                         </button>
                     </td>
                 </tr>
@@ -92,7 +115,7 @@
         <div class="flex items-center space-x-3">
             Éléments par page:&nbsp;<div
                 class="p-2 flex gap-1 justify-center items-center border border-[#273140] rounded-lg">{{
-                contactsStore.perPage }} <img class="h-3" src="/images/icon/arrow-down.png" alt="">
+                    contactsStore.perPage }} <img class="h-3" src="/images/icon/arrow-down.png" alt="">
             </div>
             <span class="font-semibold text-white">{{ contactsStore.from }}-{{ contactsStore.to }}&nbsp;</span> sur
             <span class="font-semibold text-white">{{ contactsStore.totalContacts }}&nbsp;</span> éléments

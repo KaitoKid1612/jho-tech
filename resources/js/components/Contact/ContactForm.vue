@@ -68,7 +68,6 @@
 import { ref, computed, defineProps, defineEmits, onMounted } from "vue";
 import { useContactsStore } from "../../store/contacts";
 import { useTagsStore } from "../../store/tags";
-import { useManagersStore } from "../../store/managers";
 import VueMultiselect from "vue-multiselect";
 import "vue-multiselect/dist/vue-multiselect.css";
 
@@ -81,7 +80,6 @@ const emit = defineEmits(["close", "success"]);
 
 const contactsStore = useContactsStore();
 const tagsStore = useTagsStore();
-const managersStore = useManagersStore();
 
 const formData = ref({
   name: "",
@@ -94,11 +92,9 @@ const formData = ref({
 const errors = ref({});
 const errorMessage = ref("");
 
-const managers = computed(() => managersStore.managers);
 const tags = computed(() => tagsStore.tags);
 
 onMounted(() => {
-  managersStore.fetchManagers();
   tagsStore.fetchTags();
 });
 
