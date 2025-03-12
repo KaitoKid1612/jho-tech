@@ -33,5 +33,20 @@ export const useContactsStore = defineStore("contacts", {
         async removeContact(id) {
             await api.delete(`/contacts/${id}`);
         },
+        async searchContacts(filters) {
+            this.loading = true;
+            try {
+                const response = await api.get("/contacts/search", { params: filters });
+                this.contacts = response.data.map(contact => ({
+                    id: contact._id,
+                    ...contact._source
+                }));
+                this.totalContacts = response.data.length;
+            } catch (error) {
+                console.error("Error searching contacts:", error);
+            } finally {
+                this.loading = false;
+            }
+        }
     },
 });

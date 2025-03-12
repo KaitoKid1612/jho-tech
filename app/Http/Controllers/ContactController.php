@@ -3,10 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contact;
+use Elastic\Elasticsearch\ClientBuilder;
 use Illuminate\Http\Request;
 
 class ContactController extends Controller
 {
+    protected $elasticsearch;
+
+    public function __construct()
+    {
+        $this->elasticsearch = ClientBuilder::create()
+            ->setHosts(['localhost:9200'])
+            ->build();
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -62,29 +72,63 @@ class ContactController extends Controller
         return response()->json(null, 204);
     }
 
-    public function filter(Request $request)
+    public function searchContacts(Request $request)
     {
-        $query = Contact::query();
+        $query = [
+            'index' => 'contacts',  // Index của Elasticsearch
+            'body' => [
+                'query' => [
+                    'bool' => [
+                        'must' => []
+                    ]
+                ]
+            ]
+        ];
 
-        if ($request->has('search')) {
-            $query->where('name', 'LIKE', "%{$request->search}%")
-                ->orWhere('email', 'LIKE', "%{$request->search}%");
+        // Nếu có search text
+        if ($request->filled('search')) {
+            $query['body']['query']['bool']['must'][] = [
+                'multi_match' => [
+                    'query' => $request->search,
+                    'fields' => ['name', 'email', 'tags.name']
+                ]
+            ];
         }
 
-        if ($request->has('created_by')) {
-            $query->where('created_by', $request->created_by);
+        // Nếu có filter theo ngày tạo
+        if ($request->filled('created_at')) {
+            $query['body']['query']['bool']['must'][] = [
+                'range' => [
+                    'created_at' => [
+                        'gte' => $request->created_at
+                    ]
+                ]
+            ];
         }
 
-        if ($request->has('manager')) {
-            $query->where('manager', $request->manager);
+        // Nếu có filter theo email
+        if ($request->filled('email')) {
+            $query['body']['query']['bool']['must'][] = [
+                'match' => ['email' => $request->email]
+            ];
         }
 
-        if ($request->has('tags')) {
-            $query->whereHas('tags', function ($q) use ($request) {
-                $q->whereIn('name', explode(',', $request->tags));
-            });
+        // Nếu có filter theo tag
+        if ($request->filled('tags')) {
+            $query['body']['query']['bool']['must'][] = [
+                'terms' => ['tags' => $request->tags]
+            ];
         }
 
-        return response()->json($query->paginate(10));
+        // Nếu có filter theo Manager
+        if ($request->filled('manager')) {
+            $query['body']['query']['bool']['must'][] = [
+                'match' => ['manager' => $request->manager]
+            ];
+        }
+
+        $results = $this->elasticsearch->search($query);
+
+        return response()->json($results['hits']['hits']);
     }
 }
