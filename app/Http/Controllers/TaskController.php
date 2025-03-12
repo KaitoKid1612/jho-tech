@@ -12,7 +12,11 @@ class TaskController extends Controller
      */
     public function index()
     {
-        return response()->json(Task::with('tags')->get());
+        $tasks = Task::with(['opportunity', 'contact', 'user', 'tags'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(25);
+
+        return response()->json($tasks);
     }
 
     /**

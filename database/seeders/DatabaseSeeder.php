@@ -24,6 +24,9 @@ class DatabaseSeeder extends Seeder
             OpportunitySeeder::class,
             TaskSeeder::class,
             TagSeeder::class,
+            ContactTagSeeder::class,
+            TaskTagSeeder::class,
+            OpportunityTagSeeder::class,
         ]);
     }
 }

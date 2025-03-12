@@ -78,7 +78,12 @@
                     <td class="px-6 py-4 whitespace-nowrap text-gray-300">{{ opportunity.organization?.name || '-' }}
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-gray-300">{{ opportunity.contact?.name || '-' }}</td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-300">{{ opportunity.user?.name || '-' }}</td>
+                    <td class="px-6 py-4 whitespace-nowrap text-gray-300">
+                        <div class="flex items-center gap-2">
+                            <img src="/images/icon/avatar.png" alt="Phone" class="w-4 h-4 text-white max-w-none" />
+                            {{ opportunity.user?.name || '-' }}
+                        </div>
+                    </td>
                     <td class="px-6 py-4 whitespace-nowrap text-gray-300">{{ opportunity.amount ? `${opportunity.amount}
                         €` : '-' }}</td>
                     <td class="px-6 py-4 whitespace-nowrap text-gray-300">{{ opportunity.closing_date || '-' }}</td>

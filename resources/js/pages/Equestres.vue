@@ -1,13 +1,7 @@
-<template lang="">
-    <div>
-        <h1> Equestres </h1>
-    </div>
+<template>
+    <NavigationTabs />
 </template>
-<script>
-export default {
 
-}
+<script setup>
+import NavigationTabs from "../components/NavigationTabs.vue";
 </script>
-<style lang="">
-
-</style>

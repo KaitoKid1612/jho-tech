@@ -33,7 +33,9 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::apiResource('opportunities', OpportunityController::class);
     Route::apiResource('tasks', TaskController::class);
     Route::apiResource('tags', TagController::class);
-    Route::get('/contacts/search', [ContactController::class, 'searchContacts']);
+    Route::get('/contacts/filter', [ContactController::class, 'filter']);
+    Route::get('/contacts/export', [ContactController::class, 'export']);
+    Route::get('/contacts/search', [ContactController::class, 'search']);
     Route::get('/opportunities/pipeline', [OpportunityController::class, 'pipeline']);
     Route::get('/tasks/filter', [TaskController::class, 'filter']);
     Route::post('/tags/assign', [TagController::class, 'assign']);

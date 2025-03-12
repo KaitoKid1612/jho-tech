@@ -2,13 +2,13 @@
     <NavigationTabs />
     <div class="flex justify-between items-center pb-4 mt-7">
         <div class="flex items-center gap-3">
-            <button class="bg-orange-600 hover:bg-orange-500 text-white py-2 px-4 rounded flex items-center gap-2"
+            <button class="bg-orange-600 hover:bg-orange-500 text-white py-3 px-10 rounded-xl flex items-center gap-2"
                 @click="isModalOpen = true">
                 <img src="/images/icon/plus.png" alt="Add Contact" class="left-2.5 top-2.5 w-4 h-4 text-white" />
                 <p class="text-xs">Ajout de contact</p>
             </button>
             <p class="text-white text-sm font-semibold">
-                {{ contactsStore.totalContacts }} <span class="text-gray-400 font-normal">Contacts</span>
+                {{ contactsStore.totalContacts }} <span class="text-white font-normal">Contacts</span>
             </p>
         </div>
         <Filter />
@@ -40,7 +40,6 @@
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 tracking-wider">Email</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 tracking-wider">Téléphone</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 tracking-wider">Opportunity</th>
-                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 tracking-wider">Manager</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 tracking-wider">Responsable</th>
                     <th class="px-6 py-3 text-left text-xs font-medium text-gray-400 tracking-wider">Étiquettes</th>
                     <th class="px-6 py-3 text-xs font-medium text-gray-400 tracking-wider text-center">
@@ -68,14 +67,12 @@
                             <span>{{ contact.email }}</span>
                         </div>
                     </td>
-
                     <td class="px-6 py-4 whitespace-nowrap text-gray-300">
                         <div class="flex items-center gap-2">
                             <img src="/images/icon/call.png" alt="Phone" class="w-4 h-4 text-white max-w-none" />
                             <span>{{ contact.phone }}</span>
                         </div>
                     </td>
-
                     <td class="px-6 py-4 whitespace-nowrap text-gray-300">
                         <span v-if="contact.opportunities.length > 0">
                             {{ contact.opportunities[0].title }}
@@ -83,12 +80,11 @@
                         <span v-else class="text-gray-500">-</span>
                     </td>
                     <td class="px-6 py-4 whitespace-nowrap text-gray-300">
-                        <span v-if="contact.opportunities.length > 0">
-                            {{ contact.opportunities[0].user_id }}
-                        </span>
-                        <span v-else class="text-gray-500">-</span>
+                        <div class="flex items-center gap-2">
+                            <img src="/images/icon/avatar.png" alt="Phone" class="w-4 h-4 text-white max-w-none" />
+                            {{ contact.user?.name || '-' }}
+                        </div>
                     </td>
-                    <td class="px-6 py-4 whitespace-nowrap text-gray-300">{{ contact.user?.name || '-' }}</td>
                     <td class="px-6 py-4 whitespace-nowrap">
                         <div class="flex space-x-2">
                             <span v-for="tag in contact.tags" :key="tag.id"
@@ -152,7 +148,6 @@ import { useContactsStore } from "../store/contacts";
 const contactsStore = useContactsStore();
 const isModalOpen = ref(false);
 
-// Xóa contact
 const handleDeleteContact = async (id) => {
     if (confirm("Are you sure you want to delete this contact?")) {
         await contactsStore.removeContact(id);
@@ -161,7 +156,6 @@ const handleDeleteContact = async (id) => {
     }
 };
 
-// Phân trang
 const prevPage = () => {
     if (contactsStore.prevPageUrl) {
         contactsStore.getContacts(contactsStore.prevPageUrl);

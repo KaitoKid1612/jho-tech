@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Contact;
+use App\Models\User;
 use Elastic\Elasticsearch\ClientBuilder;
 use Illuminate\Http\Request;
 
@@ -72,10 +73,39 @@ class ContactController extends Controller
         return response()->json(null, 204);
     }
 
-    public function searchContacts(Request $request)
+    public function filter(Request $request)
+    {
+        $query = Contact::query();
+
+        if ($request->has('email')) {
+            $query->where('email', 'LIKE', '%' . $request->email . '%');
+        }
+
+        if ($request->has('created_at')) {
+            $query->whereDate('created_at', $request->created_at);
+        }
+
+        if ($request->has('search')) {
+            $query->where(function ($q) use ($request) {
+                $q->where('name', 'LIKE', '%' . $request->search . '%')
+                    ->orWhere('email', 'LIKE', '%' . $request->search . '%');
+            });
+        }
+
+        if ($request->has('manager')) {
+            $managers = User::where('role', 'manager')->pluck('id');
+            $query->whereIn('user_id', $managers);
+        }
+
+        $contacts = $query->get();
+
+        return response()->json($contacts);
+    }
+
+    public function search(Request $request)
     {
         $query = [
-            'index' => 'contacts',  // Index của Elasticsearch
+            'index' => 'contacts',
             'body' => [
                 'query' => [
                     'bool' => [
@@ -85,7 +115,6 @@ class ContactController extends Controller
             ]
         ];
 
-        // Nếu có search text
         if ($request->filled('search')) {
             $query['body']['query']['bool']['must'][] = [
                 'multi_match' => [
@@ -95,7 +124,6 @@ class ContactController extends Controller
             ];
         }
 
-        // Nếu có filter theo ngày tạo
         if ($request->filled('created_at')) {
             $query['body']['query']['bool']['must'][] = [
                 'range' => [
@@ -106,24 +134,23 @@ class ContactController extends Controller
             ];
         }
 
-        // Nếu có filter theo email
         if ($request->filled('email')) {
             $query['body']['query']['bool']['must'][] = [
                 'match' => ['email' => $request->email]
             ];
         }
 
-        // Nếu có filter theo tag
         if ($request->filled('tags')) {
             $query['body']['query']['bool']['must'][] = [
                 'terms' => ['tags' => $request->tags]
             ];
         }
 
-        // Nếu có filter theo Manager
         if ($request->filled('manager')) {
+            $managers = User::where('role', 'manager')->pluck('id')->toArray();
+
             $query['body']['query']['bool']['must'][] = [
-                'match' => ['manager' => $request->manager]
+                'terms' => ['user_id' => $managers]
             ];
         }
 
