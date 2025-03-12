@@ -29,7 +29,7 @@ services:
         container_name: jho-tech-db
         restart: unless-stopped
         ports:
-            - "3306:3306"
+            - "3307:3306"
         volumes:
             - dbdata:/var/lib/mysql
         environment:
@@ -45,7 +45,7 @@ services:
         container_name: jho-tech-phpmyadmin
         restart: unless-stopped
         ports:
-            - "8081:80"
+            - "8386:80"
         environment:
             - PMA_HOST=jho-tech-db
             - MYSQL_ROOT_PASSWORD=123456

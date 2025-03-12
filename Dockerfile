@@ -29,7 +29,6 @@ RUN sed -ri -e 's!/var/www/!/var/www/html/public!g' /etc/apache2/apache2.conf /e
 
 RUN a2enmod rewrite headers
 
-
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
@@ -50,7 +49,7 @@ RUN composer update --no-dev --optimize-autoloader
 RUN npm install
 
 RUN chown -R www-data:www-data /var/www/html/storage /var/www/html/bootstrap/cache
-RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
+RUN chmod -R 777 /var/www/html/storage /var/www/html/bootstrap/cache
 
 EXPOSE 80
 

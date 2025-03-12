@@ -4,7 +4,7 @@
     <div class="flex flex-col flex-1">
       <Navbar />
       <main class="p-6 bg-gray-900 flex-1 overflow-auto">
-        <router-view></router-view> <!-- Sử dụng router-view thay vì slot -->
+        <router-view></router-view>
       </main>
     </div>
   </div>
@@ -13,10 +13,4 @@
 <script setup>
 import Sidebar from "../components/Sidebar.vue";
 import Navbar from "../components/Navbar.vue";
-
-import { onMounted } from "vue";
-
-onMounted(() => {
-  console.log("HomeLayout mounted!");
-});
 </script>

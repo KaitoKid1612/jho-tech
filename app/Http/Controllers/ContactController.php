@@ -10,9 +10,13 @@ class ContactController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Contact::with('tags')->get());
+        $contacts = Contact::with(['user', 'opportunities', 'tags'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(25);
+
+        return response()->json($contacts);
     }
 
     /**

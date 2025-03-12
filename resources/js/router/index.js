@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import { useAuthStore } from "../store";
-import Home from "../pages/Home.vue";
+import Contacts from "../pages/Contacts.vue";
 import Login from "../pages/Login.vue";
 import Signup from "../pages/Signup.vue";
 import HomeLayout from "../layouts/HomeLayout.vue";
@@ -11,7 +11,7 @@ const routes = [
         component: HomeLayout,
         meta: { requiresAuth: true },
         children: [
-            { path: "contacts", component: Home },
+            { path: "contacts", component: Contacts },
         ],
     },
     { path: "/login", component: Login },

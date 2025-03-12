@@ -11,7 +11,7 @@
 
     <!-- Search Bar -->
     <div class="flex gap-3">
-      <div class="flex flex-1 items-center gap-2">
+      <div class="flex flex-1 items-center gap-2 w-[407px]">
         <div class="relative flex-1 w-full max-h-[40px]">
           <img
             src="/images/icon/search.png"
@@ -53,7 +53,7 @@
           <img
             src="/images/icon/setting.png"
             alt="Settings"
-            class="w-4 h-4"
+            class="w-4 h-4 mr-2"
           />
         </button>
       </nav>
@@ -64,8 +64,8 @@
           {{ userInitials }}
         </div>
         <div class="text-xs text-white">
-          <div>{{ userName }}</div>
-          <div class="text-xs text-gray-400">{{ userRole }}</div>
+          <div>{{ user?.name || "Guest" }}</div>
+          <div class="text-xs text-gray-400">{{ user?.role || "Unknown" }}</div>
         </div>
       </div>
     </div>
@@ -74,17 +74,16 @@
 
 <script setup>
 import { ref, computed } from "vue";
+import { useAuthStore } from "../store/index";
 
-// Reactive variables
 const searchQuery = ref("");
 
-// User data (could be from Vuex, Pinia, or API)
-const userName = ref("Sébastien Hannoux");
-const userRole = ref("CEO, Admin");
+const authStore = useAuthStore();
+const user = computed(() => authStore.user);
 
-// Compute initials from name
 const userInitials = computed(() => {
-  return userName.value
+  if (!user.value || !user.value.name) return "";
+  return user.value.name
     .split(" ")
     .map((n) => n[0])
     .join("")
