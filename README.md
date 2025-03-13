@@ -72,16 +72,14 @@ cp .env.example .env
 ## 📌 4. Cấu hình Laradock
 ✅ Bước 1: Mở file .env trong thư mục laradock và sửa một số thiết lập quan trọng.
 ```bash
-MYSQL_VERSION=8.0
 MYSQL_DATABASE=jho_tech
 MYSQL_USER=admin
 MYSQL_PASSWORD=123456
 MYSQL_ROOT_PASSWORD=123456
 ```
-✅ Bước 2: Cấu hình Apache
+✅ Bước 2: Cấu hình Nginx
 ```bash
-WORKSPACE_INSTALL_APACHE=true
-APACHE_DOCUMENT_ROOT=/var/www/html/public
+NGINX_HOST_HTTP_PORT=8765
 ```
 ✅ Bước 3: Cấu hình ElasticSearch
 ```bash
@@ -91,6 +89,7 @@ ELASTICSEARCH_VERSION=8.12.0
 ```bash
 PMA_DB_ENGINE=mysql
 PMA_HOST=mysql
+PMA_PORT=8386
 ```
 ## 📌 5. Cấu hình Laradock
 ✅ Khởi động các service cần thiết (PHP, MySQL, Nginx, Elasticsearch, Kibana, PHPMyAdmin):
@@ -109,7 +108,7 @@ npm install
 ```
 ✅ Cấp quyền cho thư mục storage:
 ```bash
-chmod -R 775 storage
+chmod -R 777 storage
 ```
 ✅ Chỉnh sửa .env trong Laravel để trỏ database về mysql:
 ```bash
@@ -134,6 +133,11 @@ Mở trình duyệt và truy cập vào địa chỉ: http://localhost:8765
 Email: admin0@gmail.com
 Password: password
 
+## 📌 8. Tài Khoản PHPMyAdmin
+Truy cập vào PHPMyAdmin: http://localhost:8386
+Host: mysql
+Username: admin
+Password: 123456
 
 ```bash
 CRM API
