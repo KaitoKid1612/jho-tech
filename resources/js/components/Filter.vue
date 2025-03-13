@@ -18,9 +18,9 @@
             <select v-model="filters.createdBy" @change="applyFilter"
                 class="w-full pl-8 pr-3 py-2 bg-transparent text-[12px] border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-[#f85149]">
                 <option value="">Tout le monde</option>
-                <option v-for="creator in creators" :key="creator.id" :value="creator.id">
+                <!-- <option v-for="creator in creators" :key="creator.id" :value="creator.id">
                     {{ creator.name }}
-                </option>
+                </option> -->
             </select>
         </div>
 
@@ -45,6 +45,34 @@
                 type="search"
             />
         </div>
+
+        <!-- Settings Button -->
+        <div class="relative">
+            <button @click="isDropdownOpen = !isDropdownOpen"
+                class="border border-gray-700 rounded-lg w-8 h-8 flex items-center justify-center">
+                <img src="/images/icon/setting.png" alt="Settings" class="w-4 h-4 text-white" />
+            </button>
+
+            <div v-if="isDropdownOpen"
+                class="absolute right-0 mt-2 w-52 bg-gray-900 rounded-lg shadow-lg z-50 border border-gray-600">
+                <ul class="text-white p-4 space-y-2 text-sm">
+                    <li @click="openContactListModal" class="cursor-pointer p-2 hover:bg-gray-700 rounded-lg">Créer /
+                        Editer une Liste</li>
+                    <li @click="isDropdownOpen = false" class="cursor-pointer p-2 hover:bg-gray-700 rounded-lg">Créer /
+                        Editer une Etiquette</li>
+                    <li @click="openExportResultModal" class="cursor-pointer p-2 hover:bg-gray-700 rounded-lg">
+                        Exporter
+                        les résultats du filtre...</li>
+                    <li @click="isDropdownOpen = false" class="cursor-pointer p-2 hover:bg-gray-700 rounded-lg">Importer
+                        des données</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Contact List Modal -->
+        <ContactListModal :isOpen="isContactListModalOpen" @close="isContactListModalOpen = false" />
+        <ExportResultsModal :isOpen="isExportModalOpen" :totalItems="88" @close="isExportModalOpen = false"
+            @export="handleExport" />
     </div>
 </template>
 
@@ -52,6 +80,8 @@
 import { ref, onMounted } from "vue";
 import { useContactsStore } from "../store/contacts";
 import { useTagsStore } from "../store/tags";
+import ContactListModal from "./Contact/ContactListModal.vue";
+import ExportResultsModal from "./Contact/ExportResultsModal.vue";
 
 const contactsStore = useContactsStore();
 const tagsStore = useTagsStore();
@@ -67,14 +97,24 @@ const creators = ref([]);
 const tags = ref([]);
 
 onMounted(async () => {
-    await contactsStore.fetchCreators();
-    creators.value = contactsStore.creators;
-
     await tagsStore.fetchTags();
     tags.value = tagsStore.tags;
 });
 
 const applyFilter = () => {
     contactsStore.searchContacts(filters.value);
+};
+
+const isDropdownOpen = ref(false);
+const isContactListModalOpen = ref(false);
+const openContactListModal = () => {
+    isDropdownOpen.value = false;
+    isContactListModalOpen.value = true;
+};
+
+const isExportModalOpen = ref(false);
+const openExportResultModal = () => {
+    isDropdownOpen.value = false;
+    isExportModalOpen.value = true;
 };
 </script>

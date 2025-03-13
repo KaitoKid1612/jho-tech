@@ -16,7 +16,7 @@ services:
             - .:/var/www/html
             - /var/www/html/node_modules
         ports:
-            - 8080:80
+            - 8765:80
             - 5173:5173
         networks:
             - jho-tech-network
