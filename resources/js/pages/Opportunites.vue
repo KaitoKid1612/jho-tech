@@ -2,9 +2,9 @@
     <NavigationTabs />
     <div class="flex justify-between items-center pb-4 mt-7">
         <div class="flex items-center gap-3">
-            <button class="bg-orange-600 hover:bg-orange-500 text-white py-3 px-10 rounded-xl flex items-center gap-2"
+            <button class="bg-orange-600 hover:bg-orange-500 text-white py-3 px-11 rounded-xl flex items-center gap-1"
                 @click="isModalOpen = true">
-                <img src="/images/icon/plus.png" alt="Add Opportunity" class="left-2.5 top-2.5 w-4 h-4 text-white" />
+                <img src="/images/icon/plus.png" alt="Add Opportunity" class="w-4.5 h-4.5 text-white" />
                 <p class="text-xs">Ajout opportunité</p>
             </button>
             <div class="flex items-center text-white">
@@ -26,7 +26,7 @@
         <Filter />
     </div>
 
-    <div class="bg-[#17202E] p-6 rounded-lg shadow-lg mt-5">
+    <div class="bg-[#17202E] px-8 py-7 rounded-lg shadow-lg mt-12">
         <!-- Loading -->
         <div v-if="opportunitiesStore.loading" class="flex justify-center py-10">
             <svg class="animate-spin h-10 w-10 text-white" xmlns="http://www.w3.org/2000/svg" fill="none"

@@ -27,21 +27,21 @@
     <!-- Manager Dropdown -->
     <div>
       <label class="block text-gray-400">Manager</label>
-      <vue-multiselect
+      <!-- <vue-multiselect
         v-model="formData.managed_by"
         :options="managers"
         track-by="id"
         label="name"
         placeholder="Select a manager"
         class="text-black"
-      />
+      /> -->
       <p v-if="errors.managed_by" class="text-red-500 text-xs">{{ errors.managed_by }}</p>
     </div>
 
     <!-- Tags Multi-Select -->
     <div>
       <label class="block text-gray-400">Tags</label>
-      <vue-multiselect
+      <!-- <vue-multiselect
         v-model="formData.tags"
         :options="tags"
         multiple
@@ -49,7 +49,7 @@
         label="name"
         placeholder="Select tags"
         class="text-black"
-      />
+      /> -->
     </div>
 
     <!-- Buttons -->
